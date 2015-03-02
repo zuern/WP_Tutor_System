@@ -1,0 +1,86 @@
+@import url('jquery-ui.css');
+.clear:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+table.ctc {
+	border-radius: 5px;
+	border:1px black solid;
+	max-width:100%;
+	overflow-x:scroll;
+}
+table.ctc tr {
+	padding: 5px 0;
+}
+table.ctc tr:nth-child(2n+1) {
+	background-color:hsl(0,0%,91%);
+}
+table.ctc th,
+table.ctc td {
+	padding:5px 15px;
+}
+.priority {
+	background-color: rgb(250,140,140);
+	display: inline-block;
+	width: 15px;
+	height: 20px;
+}
+.tutored {
+	background-color: grey;
+	display: inline-block;
+	width: 15px;
+	height: 20px;
+}
+.okay {
+	background-color: rgb(140,250,140);
+	display: inline-block;
+	width: 15px;
+	height: 20px;
+}
+.container,
+.container-fluid {
+	position:relative;
+	max-width:100%;
+
+	/*Clearfix for floated columns*/
+	content: "";
+  	display: table;
+  	clear: both;
+}
+.container-fluid {
+	width:100%;
+}
+label {
+	display:inline;
+	font-weight: bold;
+}
+@media all and (min-width:1200px) {
+	.container {
+		max-width:960px;
+	}
+	.col-md-6 {
+		max-width:480px;
+	}
+	.col-md-4 {
+		max-width:320px;
+	}
+	.col-md-4 {
+		float:left;
+		margin-right:5px;
+		margin-left:0;
+		width:30%;
+	}
+	.col-md-6 {
+		float:left;
+		width:47%;
+		margin-right:5px;
+		margin-left:0;
+	}
+	.col-md-8 {
+		float:left;
+		width:60%;
+		margin-right:5px;
+		margin-left:0;
+	}
+}
