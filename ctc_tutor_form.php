@@ -1,9 +1,8 @@
 <?php
 /*
 Plugin Name: Englinks Tutor Matcher
-Plugin URI: http://www.queenscodethechange.com/
 Description: This plugin provides an interface for automatically matching students with tutors.
-Version: 1.0
+Version: 1.1
 Author: Code the Change, Queen's Chapter
 Author URI: http://www.queenscodethechange.com/
 License: GPL2
