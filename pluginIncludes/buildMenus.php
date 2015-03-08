@@ -25,7 +25,7 @@
 	function load_tutorCoordinator_bulkAddQualifications() {
 		include_once(ctc_plugin_dir.'views/coordinator/coordinator-addqualifications.php');
 	}
-	function load_tutorCoordinator_bulkDeleteCourses() {
+	function load_tutorCoordinator_bulkDeleteApplications() {
 		include_once(ctc_plugin_dir.'views/coordinator/coordinator-deleteApplications.php');
 	}
 	function load_Admin_Advanced() {
@@ -188,15 +188,15 @@
 			// The slug of the top level menu we are attaching to
 			$topLevelMenuSlug,
 			// Title attribute for link.
-			'Bulk Delete Courses',
+			'Bulk Delete Applications',
 			// Text to display on menu.
-			'Bulk Delete Courses',
+			'Bulk Delete Applications',
 			// Capability needed for menu to display.
 			'view_Tutor_Coordinator_Menus',
 			// Unique slug (url) for the page.
-			'bulkDeleteCourses',
+			'bulkDeleteApplications',
 			// Function to generate the page.
-			'load_tutorCoordinator_bulkDeleteCourses'
+			'load_tutorCoordinator_bulkDeleteApplications'
 		);
 
 		//
