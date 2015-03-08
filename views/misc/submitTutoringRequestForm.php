@@ -1,7 +1,7 @@
 <?php 
 	defined("ABSPATH") or die("No Script Kiddies Please!"); // Prevents direct access to PHP file
 	include_once(ctc_plugin_dir.'models/ctc_Data_Model.php');
-	?>
+?>
 <style>
 	div.smallText {
 		font-size:12px;
@@ -146,11 +146,6 @@
 		</ul>
 	</div>
 <?php endif; ?>
-
-Fill in this form and we will put you in contact with potential tutors.
-<span class="smallText underline"><br>
-	Please note: If you don't see your course listed, it means we currently don't have a tutor for that course.
-</span>
 
 <label for="fullName">Full Name <span class="extrainfo">(Last, First)</span></label>
 <input type="text" name="fullName" value="<?php echo $fullName; ?>" required>
