@@ -101,6 +101,7 @@ $courseCodes = getAllApplications();
 				<th>Application Date</th>
 				<th>Name</th>
 				<th>Comments</th>
+				<th>Frequency</th>
 				<th>Tutor</th>
 				<th>Claim Date</th>
 				<th>Delete Record</th>
@@ -131,6 +132,7 @@ $courseCodes = getAllApplications();
 					 ?>
 					<td><a href='mailto:<?php echo esc_html($application["Email"]); ?>?subject=EngLinks%3A%20You%20have%20been%20matched%20with%20a%20tutor!&body=Dear%20Student%2C%0A%0A<?php echo $tutorName; ?>%20is%20a%20tutor%20for%20<?php echo esc_html($application["Course"]); ?>.%20The%20cost%20for%20EngLinks%20tutors%20is%20%2415(1st%20year%20courses)%2F%2420(upper%20year%20courses)%20an%20hour%2C%20and%20you%20are%20responsible%20for%20paying%20your%20tutor%20when%20you%20meet.%20This%20email%20was%20also%20sent%20to%20<?php echo $tutorName; ?>.%20You%20both%20can%20communicate%20to%20determine%20a%20good%20time%20to%20meet.%20Have%20a%20great%20day!%0A'><?php echo esc_html($application["Name"]); ?></a></td>
 					<td><?php echo esc_html($application["Comments"]); ?></td>
+					<td><?php echo esc_html($application["Frequency"]); ?></td>
 					<td>
 						<?php if ($application["Tutored"]): $tutor = getTutor($application["Tutor_ID"]); ?>
 						<form action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="post" style="display:inline;">

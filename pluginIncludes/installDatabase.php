@@ -14,6 +14,7 @@ $wpdb->query("
   `application_ID` int(10) NOT NULL AUTO_INCREMENT,
   `email` varchar(64) NOT NULL,
   `course_ID` int(10) NOT NULL,
+  `frequency` int(11) NOT NULL COMMENT 'The frequency with which the student will be tutored. 1 = once, 2 = weekly, 3 = bi-weekly, 4 = monthly, 5 = bi-monthly',
   `comments` varchar(1024) NOT NULL,
   `submitdate` date NOT NULL,
   `tutor_ID` int(4) DEFAULT NULL,

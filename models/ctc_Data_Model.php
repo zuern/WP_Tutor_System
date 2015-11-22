@@ -3,13 +3,14 @@ defined("ABSPATH") or die("No Script Kiddies Please!");	// Prevents direct acces
 require_once(ABSPATH.'wp-admin/includes/user.php' );
 
 // Adds a new application to the database. Returns an array of errors or NULL if successful
-function addApplication($fullName, $email, $courseID, $comments){
+function addApplication($fullName, $email, $courseID, $tutoringFrequency, $comments){
 	$errors = array(); 	// Holds any error messages to return
 
 	// Sanitize Data
 	$cleanName 			= sanitize_text_field( $fullName );
 	$cleanEmail 		= sanitize_email( $email );
 	$cleanCourseID 		= intval($courseID);
+	$cleanFrequency		= intval($tutoringFrequency);
 	$cleanComments 		= sanitize_text_field( $comments );
 	$cleanDate 			= date('Y-m-d');
 
@@ -29,12 +30,14 @@ function addApplication($fullName, $email, $courseID, $comments){
 			array(
 				'email'			=>	$cleanEmail,
 				'course_ID'		=>	$cleanCourseID,
+				'frequency'		=>  $cleanFrequency,
 				'comments'		=>	$cleanComments,
 				'submitdate'	=>	$cleanDate,
 				'name'			=>	$cleanName
 				),
 			array(
 				'%s',
+				'%d',
 				'%d',
 				'%s',
 				'%s',
@@ -145,12 +148,33 @@ function createStudent($application) {
 	$dateNow  = new DateTime();
 	$dateThen = new DateTime($application->submitdate);
 	$age 	  = $dateNow->diff($dateThen)->days;
+
+	// Set the tutoring frequency. The values 1-5 and their meaning is defined in installDatabase.php
+	$Tutoring_Frequency = intval($application->frequency);
+	switch ($Tutoring_Frequency) {
+		case 1:
+			$Tutoring_Frequency = "Once";
+			break;
+		case 2:
+			$Tutoring_Frequency = "Weekly";
+			break;
+		case 3:
+			$Tutoring_Frequency = "Bi-Weekly";
+			break;
+		case 4:
+			$Tutoring_Frequency = "Monthly";
+			break;
+		case 5:
+			$Tutoring_Frequency = "Bi-Monthly";
+			break;
+	}
 	
 	return array(
 		"Name"				=>	$Name,
 		"Email"				=>	$Email,
 		"Course"			=>	$Course,
 		"Course_ID"			=>	$Course_ID,
+		"Frequency"			=>  $Tutoring_Frequency,
 		"Comments"			=>	$Comments,
 		"SubmitDate"		=>	$SubmitDate,
 		"ID"				=>	$ID,

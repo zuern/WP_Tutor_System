@@ -65,6 +65,7 @@
 	$fullName = "";
 	$email = "";
 	$courseID = NULL;
+	$tutoringFrequency = NULL;
 	$comments = "";
 	
 	/*
@@ -106,6 +107,13 @@
 		} else{
 			$courseID = intval(test_input($_POST["course"]));
 		}
+		if (empty($_POST["frequency"]) == "-1") {
+			$errors[] = "Must select a tutoring frequency.";
+			$noErrors = false;
+		}
+		else {
+			$tutoringFrequency = intval(test_input(($_POST["frequency"])));
+		}
 		if (!empty($_POST["comments"])) {
 			$comments = test_input($_POST["comments"]);
 			if(strlen($comments)>$commentsCharLimit){
@@ -116,7 +124,7 @@
 
 		if (isset($noErrors) && $noErrors){
 			// Add our application to the database. If we have any errors, the error messages will be returned.
-			$errors = addApplication($fullName,$email,$courseID,$comments);
+			$errors = addApplication($fullName,$email,$courseID,$tutoringFrequency,$comments);
 			$successfulInsert = isset($errors);
 		}
 	}
@@ -159,6 +167,16 @@
 	<?php foreach (getCourseList() as $course): if ($course["isEnabled"]): ?>
 	<option value="<?php echo $course['id']; ?>" <?php if (isset($courseID) && $courseID == $course["id"]) {echo 'selected'; } ?>><?php echo $course['code']; ?></option>
 	<?php endif; endforeach; ?>
+</select>
+
+<label for="frequency">How often do you require tutoring?</label>
+<select name="frequency">
+	<option value="-1"<?php if (!isset($tutoringFrequency)) {echo 'selected'; } ?>>Select Frequency</option>
+	<option value="1">Just Once</option>
+	<option value="2">Weekly</option>
+	<option value="3">Bi-Weekly</option>
+	<option value="4">Monthly</option>
+	<option value="5">Bi-Monthly</option>
 </select>
 
 <label for="comments">Comments <span class="extrainfo">(Mention how long you need tutoring, your availabilty, etc.)</span></label>
