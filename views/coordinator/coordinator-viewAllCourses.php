@@ -1,6 +1,8 @@
 <?php 
 defined("ABSPATH") or die("No Script Kiddies Please!"); // Prevents direct access to PHP file.
 
+wp_enqueue_script( 'jquery-ui-accordion' );
+
 include_once(ctc_plugin_dir.'models/ctc_Data_Model.php');
 
 $message = NULL;
@@ -88,10 +90,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		break;
 	}
 }
+
+
+$courseList = getCourseList();
+
 ?>
-<div class="wrap">
-	<h2>Master Course List</h2>
-	<div id="masterCourseList">
+<div class="wrap container-fluid">
+	<div id="masterCourseList" class="col-md-4">
+		<h2>Master Course List</h2>
 		<form action="<?php echo $_SERVER["REQUEST_URI"]; ?> " method="post">
 			<h4>Enable/Disable all courses</h4>
 			<input type="hidden" name="actionType" value="bulkEnableDisableCourses">
@@ -112,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<th>Course Code</th>
 				<th>Toggle</th>
 			</tr>
-			<?php foreach (getCourseList() as $c): ?>
+			<?php foreach ($courseList as $c): ?>
 			<tr>
 				<td><?php echo $c["code"]; ?></td>
 				<td>
@@ -134,4 +140,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			<?php endforeach; ?>
 		</table>
 	</div>
+	<div class="col-md-6">
+		<h2>View Tutors by Qualification</h2>
+		<div id="tutors_block">
+		<?php foreach ($courseList as $course): ?>
+
+			<h3><?php echo esc_html($course["code"]); ?></h3>
+			<div>
+			<?php  $Qualifiedtutors = getQualifiedTutors($course["id"]); ?>
+			<?php foreach ($Qualifiedtutors as $tutor): ?>
+				<?php
+					$name = esc_html($tutor["Name"]);
+					$email = esc_html($tutor["Email"]);
+				?>
+				<li><a href="mailto:<?php echo $email; ?>"><?php echo $name; ?></a></li>
+			<?php endforeach; ?>
+			</div>		
+
+		<?php endforeach; ?>
+		</div>
+	</div>
 </div>
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+	jQuery('#tutors_block').accordion({
+		collapsible: true,
+		heightStyle: "content",
+	});
+});
+
+</script>

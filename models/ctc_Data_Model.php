@@ -418,7 +418,7 @@ function getNonQualifiedCourseList($tutorID) {
 // Returns list of tutors qualified to teach a course
 function getQualifiedTutors($course_ID) {
 	global $wpdb;
-	var_dump($course_ID);
+	
 	$qualifiedTutors = $wpdb->get_results("SELECT * FROM ctc_tutor_qualifications WHERE course_ID = $course_ID");
 
 	$tutors = array();	// Stores our data

@@ -115,8 +115,8 @@ $courseData 	= getCourseList();
 							</form>
 						</td>
 					</tr>
-				<?php endforeach; ?>
-			</table>
+					<?php endforeach; ?>
+				</table>
 		<?php else: // Has No Qualifications ?>
 		<p>This tutor has no qualifications yet.</p>
 	<?php endif; ?>
