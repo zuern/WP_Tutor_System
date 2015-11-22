@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 defined("ABSPATH") or die("No Script Kiddies Please!");	// Prevents direct access to PHP file
 include_once(ctc_plugin_dir.'models/ctc_Data_Model.php');
 
@@ -14,8 +15,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$CID 			= $application["Course_ID"];
 	$actionType 	= $_POST["actionType"];
 
+	// Delete student application record
+	if (isset($AID) && isset($actionType) && $AID > 0 && $actionType == "DeleteApplication") {
+		// Delete the record
+		$success = removeSingleApplication($AID);
+
+		if ($success) {
+			$message = "Successfully delete application for tutoring from the database.";
+			$messageStatus = "updated";
+		}
+		else {
+			$message = "Could not delete application from the database.";
+			$messageStatus = "error";
+		}
+	}
+
 	// Assign tutor to student
-	if (isset($AID) && isset($TID) && isset($actionType) && $TID > 0 && $actionType == "add" && $AID > 0) {
+	else if (isset($AID) && isset($TID) && isset($actionType) && $TID > 0 && $actionType == "add" && $AID > 0) {
 
 		// Check if selected tutor is qualified to teach this student.
 		if (!canTeachCourse($TID,$CID)){
@@ -87,6 +103,7 @@ $courseCodes = getAllApplications();
 				<th>Comments</th>
 				<th>Tutor</th>
 				<th>Claim Date</th>
+				<th>Delete Record</th>
 			</tr>
 			<?php foreach ($courseCodes as $application): ?>
 				<tr>
@@ -135,6 +152,13 @@ $courseCodes = getAllApplications();
 					</td>
 					<td>
 						<?php echo $application["ClaimDate"]; ?>
+					</td>
+					<td>
+						<form action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="post" onsubmit="return confirm( 'Permanently delete this record? (<?php echo esc_html($application["Name"]); ?>)' );">
+							<input type="hidden" name="ApplicationID" value="<?php echo $application["ID"]; ?>" >
+							<input type="hidden" name="actionType" value="DeleteApplication">
+							<input type="submit" value="Delete">
+						</form>
 					</td>
 				</tr>
 			<?php endforeach; ?>

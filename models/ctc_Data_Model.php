@@ -517,6 +517,17 @@ function removeAllTutorData($tutor_ID) {
 	return ($result1 && $result2);
 }
 
+// Removes a single application from the database.
+// $application_ID: The ID of the application to remove from the database.
+// Returns true if succeeded. Else returns false.
+function removeSingleApplication($application_ID) {
+	global $wpdb;
+
+	$result = $wpdb->query("DELETE FROM ctc_applications WHERE application_ID = $application_ID");
+
+	return $result;
+}
+
 // Removes all applications that were submitted before the specified date.
 // $date: the date string (YYYY-MM-DD).
 // Returns number of rows affected or false if an error occured.
