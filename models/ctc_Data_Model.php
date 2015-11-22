@@ -24,26 +24,30 @@ function addApplication($fullName, $email, $courseID, $tutoringFrequency, $comme
 	");
 
 	if (!sizeof($duplicates) > 0) {
-
-		$successfulInsert = $wpdb->insert(
-			'ctc_applications',
-			array(
-				'email'			=>	$cleanEmail,
-				'course_ID'		=>	$cleanCourseID,
-				'frequency'		=>  $cleanFrequency,
-				'comments'		=>	$cleanComments,
-				'submitdate'	=>	$cleanDate,
-				'name'			=>	$cleanName
-				),
-			array(
-				'%s',
-				'%d',
-				'%d',
-				'%s',
-				'%s',
-				'%s',
-				)
-			);
+		if ($cleanFrequency > 0) {
+			$successfulInsert = $wpdb->insert(
+				'ctc_applications',
+				array(
+					'email'			=>	$cleanEmail,
+					'course_ID'		=>	$cleanCourseID,
+					'frequency'		=>  $cleanFrequency,
+					'comments'		=>	$cleanComments,
+					'submitdate'	=>	$cleanDate,
+					'name'			=>	$cleanName
+					),
+				array(
+					'%s',
+					'%d',
+					'%d',
+					'%s',
+					'%s',
+					'%s',
+					)
+				);
+		}
+		else {
+			$errors[] = "Frequency must be set.";
+		}
 	}
 	else {	// We found duplicate records in the db before inserting.
 		$errors[] = "You have an existing application for this course. If it's been over a week since you have applied, please contact EngLinks directly via email, and they will manually match you to a tutor.";
