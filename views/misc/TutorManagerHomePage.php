@@ -56,7 +56,7 @@ defined("ABSPATH") or die("No Script Kiddies Please!");	// Prevents direct acces
 	<p>
 		<b>The Developers:</b>
 		<ol>
-			<li>Kevin Zuern (Project Manager)</li>
+			<li><a href="mailto:kevin@muskokawebdevelopment.com">Kevin Zuern (Project Manager)</a></li>
 			<li>Anna Ilina (Project Manager)</li>
 			<li>Matthew Pollack</li>
 			<li>Daniel Lucia</li>

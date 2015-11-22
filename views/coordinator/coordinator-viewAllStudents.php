@@ -123,7 +123,13 @@ $courseCodes = getAllApplications();
 					<td><?php echo $application["Course"]; ?></td>
 					<td><?php echo $application["Application_Age"]; ?></td>
 					<td><?php echo $application["SubmitDate"]; ?></td>
-					<td><a href='mailto:<?php echo esc_html($application["Email"]);?>'><?php echo esc_html($application["Name"]); ?></a></td>
+					<?php 
+						$tutorName = "~TUTOR~";
+						if ($application["Tutored"]){
+							$tutorName = esc_html(getTutor($application["Tutor_ID"])["Name"]);
+						}
+					 ?>
+					<td><a href='mailto:<?php echo esc_html($application["Email"]); ?>?subject=EngLinks%3A%20You%20have%20been%20matched%20with%20a%20tutor!&body=Dear%20Student%2C%0A%0A<?php echo $tutorName; ?>%20is%20a%20tutor%20for%20<?php echo esc_html($application["Course"]); ?>.%20The%20cost%20for%20EngLinks%20tutors%20is%20%2415(1st%20year%20courses)%2F%2420(upper%20year%20courses)%20an%20hour%2C%20and%20you%20are%20responsible%20for%20paying%20your%20tutor%20when%20you%20meet.%20This%20email%20was%20also%20sent%20to%20<?php echo $tutorName; ?>.%20You%20both%20can%20communicate%20to%20determine%20a%20good%20time%20to%20meet.%20Have%20a%20great%20day!%0A'><?php echo esc_html($application["Name"]); ?></a></td>
 					<td><?php echo esc_html($application["Comments"]); ?></td>
 					<td>
 						<?php if ($application["Tutored"]): $tutor = getTutor($application["Tutor_ID"]); ?>
@@ -134,7 +140,7 @@ $courseCodes = getAllApplications();
 							<input type="hidden" name="actionType" value="remove">
 							<input type="submit" value="Unclaim">
 						</form>
-						<a href='mailto:<?php echo $tutor["Email"]; ?>'><?php echo $tutor["Name"]; ?></a>
+						<a href='mailto:<?php echo esc_html($application["Email"]); ?>?subject=EngLinks%3A%20You%20have%20been%20matched%20with%20a%20student!&body=Dear%20Tutor%2C%0A%0AWe%20are%20happy%20to%20notify%20you%20that%20you%20have%20been%20matched%20with%20a%20new%20student%3A%20%22<?php echo esc_html($application["Name"]); ?>%22.%20As%20always%2C%20the%20cost%20for%20EngLinks%20tutors%20is%20%2415(1st%20year%20courses)%20or%20%2420(upper%20year%20courses)%20an%20hour%2C%20and%20the%20student%20is%20responsible%20for%20paying%20you%20when%20you%20meet.%20This%20email%20was%20also%20sent%20to%20<?php echo esc_html($application["Name"]); ?>.%20You%20both%20can%20communicate%20to%20determine%20a%20good%20time%20to%20meet.%20Have%20a%20great%20day!'><?php echo $tutor["Name"]; ?></a>
 						<?php else: ?>
 						<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 							<input type="hidden" name="ApplicationID" value="<?php echo $application["ID"]; ?>">
