@@ -125,8 +125,7 @@
 		if (isset($noErrors) && $noErrors){
 			// Add our application to the database. If we have any errors, the error messages will be returned.
 			$errors = addApplication($fullName,$email,$courseID,$tutoringFrequency,$comments);
-			$successfulInsert = count($errors) == 0;
-			var_dump($successfulInsert);
+			$successfulInsert = count($errors) == 0; // If we have no errors, then we successfully inserted into the db.
 		}
 	}
 	function test_input($data) {

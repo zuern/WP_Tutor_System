@@ -53,6 +53,7 @@ $applications = getCompletedApplications(getCurrentUserID());
 			<th>Name</th>
 			<th>Email</th>
 			<th>Course</th>
+			<th>Frequency</th>
 			<th>Comments</th>
 			<th>Application Date</th>
 			<th>Age (Days)</th>
@@ -60,12 +61,13 @@ $applications = getCompletedApplications(getCurrentUserID());
 		</tr>
 		<?php foreach ($applications as $a): ?>
 		<tr>
-			<td><?php echo $a["Name"]; ?></td>
-			<td><?php echo $a["Email"]; ?></td>
-			<td><?php echo $a["Course"]; ?></td>
-			<td><?php echo $a["Comments"]; ?></td>
-			<td><?php echo $a["SubmitDate"]; ?></td>
-			<td><?php echo $a["Application_Age"]; ?></td>
+			<td><?php echo esc_html($a["Name"]); ?></td>
+			<td><?php echo esc_html($a["Email"]); ?></td>
+			<td><?php echo esc_html($a["Course"]); ?></td>
+			<td><?php echo esc_html($a["Frequency"]); ?></td>
+			<td><?php echo esc_html($a["Comments"]); ?></td>
+			<td><?php echo esc_html($a["SubmitDate"]); ?></td>
+			<td><?php echo esc_html($a["Application_Age"]); ?></td>
 			<td>
 				<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST">
 					<input name="applicationID" type="hidden" value='<?php echo $a["ID"]; ?>'>
