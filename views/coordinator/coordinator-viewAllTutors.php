@@ -86,21 +86,7 @@ $courseData 	= getCourseList();
 			<p><strong><?php echo $message; ?></strong></p>
 		</div>
 		<?php endif; ?>
-	<div class="container-fluid">
-		<div class="col-md-4">
-			<h2>Quick Links:</h2>
-			<p>Click a name below to jump to that tutor's data.</p>
-			<ol>
-				<?php foreach ($tutorData as $tutor): ?>
-					
-					<li>
-						<a href="#<?php echo $tutor['Name']; ?>" onclick="jQuery('#<?php echo $tutor['Name']; ?>').addClass('ui-accordion-header-active');"><?php echo $tutor['Name']; ?></a>
-					</li>
-
-				<?php endforeach; ?>
-			</ol>
-		</div>
-		<div id="tutors_block" class="col-md-8">
+		<div id="tutors_block">
 			<?php if (sizeof($tutorData) > 0): for ($i = 0; $i < count($tutorData); $i++): ?>
 			<?php $t = $tutorData[$i]; ?>
 			<h3 class="tutor-head" id="<?php echo $t["Name"]; ?>"><?php echo $t["Name"]; ?></h3>
@@ -204,7 +190,6 @@ $hasApps   = isset($tutorApps);
 
 
 <?php endfor; endif; // For each item in tutordata ?>
-</div>
 </div>
 
 </div>
