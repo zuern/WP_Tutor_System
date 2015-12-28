@@ -5,38 +5,22 @@
   clear: both;
 }
 table.ctc {
-	border-radius: 5px;
 	border:1px black solid;
 	max-width:100%;
 	overflow-x:scroll;
-}
-table.ctc tr {
-	padding: 5px 0;
 }
 table.ctc tr:nth-child(2n+1) {
 	background-color:hsl(0,0%,91%);
 }
 table.ctc th,
 table.ctc td {
-	padding:5px 15px;
+	padding:0px 5px;
 }
 .priority {
-	background-color: rgb(250,140,140);
-	display: inline-block;
-	width: 15px;
-	height: 20px;
-}
-.tutored {
-	background-color: grey;
-	display: inline-block;
-	width: 15px;
-	height: 20px;
+	background-color: #F2C6C6 !important;
 }
 .okay {
-	background-color: rgb(140,250,140);
-	display: inline-block;
-	width: 15px;
-	height: 20px;
+	background-color:#9FFF9F !important;
 }
 .container,
 .container-fluid {
