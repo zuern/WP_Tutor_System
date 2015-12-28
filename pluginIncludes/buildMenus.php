@@ -10,6 +10,9 @@
 	function load_tutor_myStudents() {
 		include_once(ctc_plugin_dir.'views/tutor/tutor-myStudents.php');
 	}
+	function load_tutor_preferences() {
+		include_once(ctc_plugin_dir.'views/tutor/tutor-preferences.php');
+	}
 	function load_tutorCoordinator_viewTutors() {
 		include_once(ctc_plugin_dir.'views/coordinator/coordinator-viewAllTutors.php');
 	}
@@ -92,6 +95,42 @@
 		);
 
 		//
+		// Create Tutors-only sub page for viewing/editing preferences
+		//
+		add_submenu_page(
+			// The slug of the top level menu we are attaching to
+			$topLevelMenuSlug,
+			// Title attribute for link.
+			'Preferences',
+			// Text to display on menu.
+			'Preferences',
+			// Capability needed for menu to display.
+			'view_Tutor_Menus',
+			// Unique slug (url) for the page.
+			'preferences',
+			// Function to generate the page.
+			'load_tutor_preferences'
+		);
+
+		//
+		// Create Tutor Coordinators-only sub page for managing all student applications.
+		//
+		add_submenu_page(
+			// The slug of the top level menu we are attaching to
+			$topLevelMenuSlug,
+			// Title attribute for link.
+			'View and Manage Students',
+			// Text to display on menu.
+			'Manage Students',
+			// Capability needed for menu to display.
+			'view_Tutor_Coordinator_Menus',
+			// Unique slug (url) for the page.
+			'manageStudents',
+			// Function to generate the page.
+			'load_tutorCoordinator_viewStudents'
+		);
+
+		//
 		// Create Tutor Coordinators-only sub page for managing privilages that tutors have.
 		//
 		add_submenu_page(
@@ -125,24 +164,6 @@
 			'manageCourses',
 			// Function to generate the page.
 			'load_tutorCoordinator_viewAllCourses'
-		);
-
-		//
-		// Create Tutor Coordinators-only sub page for managing all student applications.
-		//
-		add_submenu_page(
-			// The slug of the top level menu we are attaching to
-			$topLevelMenuSlug,
-			// Title attribute for link.
-			'View and Manage Students',
-			// Text to display on menu.
-			'Manage Students',
-			// Capability needed for menu to display.
-			'view_Tutor_Coordinator_Menus',
-			// Unique slug (url) for the page.
-			'manageStudents',
-			// Function to generate the page.
-			'load_tutorCoordinator_viewStudents'
 		);
 
 		//

@@ -164,9 +164,9 @@
 <label for="course">Select your course.</label>
 <select name="course">
 	<option value="-1" <?php if (!isset($courseID)) {echo 'selected'; } ?>>Select A Course</option>
-	<?php foreach (getCourseList() as $course): if ($course["isEnabled"]): ?>
+	<?php foreach (getCourseList(NULL,True) as $course): //Get all available courses?>
 	<option value="<?php echo $course['id']; ?>" <?php if (isset($courseID) && $courseID == $course["id"]) {echo 'selected'; } ?>><?php echo $course['code']; ?></option>
-	<?php endif; endforeach; ?>
+	<?php endforeach; ?>
 </select>
 
 <label for="frequency">How often do you require tutoring?</label>

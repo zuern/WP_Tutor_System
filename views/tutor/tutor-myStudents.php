@@ -47,7 +47,7 @@ $applications = getCompletedApplications(getCurrentUserID());
 <?php endif; ?>
 
 <?php if (sizeof($applications) > 0): ?>
-	<p>Here you can see the student applications that you have 'claimed'. If you claimed an application by accident, you can unclaim it here (if it was claimed today), and it will be re-entered into the system.</p>
+	<p>Here you can see the student applications that you have 'claimed'. If you claimed an application by accident, you can unclaim it here (if it was claimed today), and it will be re-entered into the pool of unclaimed students.</p>
 	<table class="ctc">
 		<tr>
 			<th>Name</th>

@@ -79,7 +79,7 @@ function addCourse($courseCode) {
 
 	// Make sure course code has at most 8 characters (XXXX-XXX)
 	if (strlen($code) == 8) {
-		$value =  $wpdb->query("INSERT INTO ctc_courses (code,isEnabled) VALUES ('$code',0)");
+		$value =  $wpdb->query("INSERT INTO ctc_courses (code) VALUES ('$code')");
 		if ($value == 1) {
 			return true;
 		}
@@ -208,12 +208,6 @@ function deleteUsersByRole($role, $areYouSure) {
 	}
 }
 
-// Disables all courses
-function disableAllCourses() {
-	global $wpdb;
-	$wpdb->query("UPDATE ctc_courses SET isEnabled = 0");
-}
-
 // Drops all code the change tables in the db. returns true if successful.
 function dropAllCTCTables($areYouSure) {
 	if ($areYouSure) {
@@ -221,6 +215,7 @@ function dropAllCTCTables($areYouSure) {
 		$wpdb->query("DROP TABLE IF EXISTS `ctc_tutor_qualifications`");
 		$wpdb->query("DROP TABLE IF EXISTS `ctc_applications`");
 		$wpdb->query("DROP TABLE IF EXISTS `ctc_courses`");
+		$wpdb->query("DROP TABLE IF EXISTS `ctc_tutor_status`");
 		return true;
 	}
 	else
@@ -229,11 +224,6 @@ function dropAllCTCTables($areYouSure) {
 	}
 }
 
-// Enables all courses
-function enableAllCourses() {
-	global $wpdb;
-	$wpdb->query("UPDATE ctc_courses SET isEnabled = 1");
-}
 
 // Returns the list of all students' applications sorted by those without a tutor first, then by course code. Returns most recent 300.
 function getAllApplications($sortbyApplicationID=false) {
@@ -273,7 +263,8 @@ function getAllTutors() {
 			"Name"			=>	$t->data->display_name,
 			"ID"			=>	$t->data->ID,
 			"Email"			=>	$t->data->user_email,
-			"Courses"		=>	getCourseList($t->data->ID)
+			"Courses"		=>	getCourseList($t->data->ID),
+			"isActive"		=>	getTutorStatus($t->data->ID)
 		);
 	}
 	return $AllTutors;
@@ -351,8 +342,10 @@ function getCourseIDByCode($course_Code) {
 	return $result;
 }
 
-// Returns the list of courses that can be taught. If tutorID is supplied, returns list of courses that that tutor is qualified to teach.
-function getCourseList($tutorID = NULL) {
+// Returns the list of courses that can be taught.
+// If tutorID is supplied, returns list of courses that that tutor is qualified to teach.
+// NOTE: Only returns courses that are currently 'active' (can be taught by somebody) if the $activeOnly flag is set to True
+function getCourseList($tutorID = NULL, $activeOnly = False) {
 	global $wpdb;
 
 	$tutorFilter = "";  			// Used for additional query parameters.
@@ -381,13 +374,15 @@ function getCourseList($tutorID = NULL) {
 	$courses = array();
 
 	foreach ($raw as $course) {
-		$courses[] = array(
-			"id"		=> intval($course->course_ID),
-			"code"		=> $course->code,
-			"isEnabled"	=> $course->isEnabled
-		);
+		$isActive = isCourseActive($course->course_ID);
+		if (!$activeOnly || $isActive)
+		{
+			$courses[] = array(
+				"id"		=> intval($course->course_ID),
+				"code"		=> $course->code,
+			);	
+		}
 	}
-
 	return $courses;
 }
 
@@ -435,8 +430,7 @@ function getNonQualifiedCourseList($tutorID) {
 	foreach ($raw as $course) {
 		$courses[] = array( 
 			"id"		=> intval($course->course_ID),
-			"code"		=> $course->code,
-			"isEnabled"	=> $course->isEnabled
+			"code"		=> $course->code
 		);
 	}
 
@@ -444,7 +438,8 @@ function getNonQualifiedCourseList($tutorID) {
 }
 
 // Returns list of tutors qualified to teach a course
-function getQualifiedTutors($course_ID) {
+// If $checkIfActive is set to true, will filter only tutors that are active as set in ctc_tutor_status in db
+function getQualifiedTutors($course_ID, $checkIfActive = False) {
 	global $wpdb;
 	
 	$qualifiedTutors = $wpdb->get_results("SELECT * FROM ctc_tutor_qualifications WHERE course_ID = $course_ID");
@@ -452,9 +447,12 @@ function getQualifiedTutors($course_ID) {
 	$tutors = array();	// Stores our data
 
 	if (sizeof($qualifiedTutors) > 0) {
-		foreach ($qualifiedTutors as $q) {
-			$tutor =  getTutor($q->user_ID);
-			$tutors[] = $tutor;
+		foreach ($qualifiedTutors as $currentTutor) {
+			// Only add tutors that are listed as 'active' if the $checkIfActive flag is set to true
+			if ($checkIfActive == False || tutorIsActive($currentTutor->user_ID)) {
+				$tutor =  getTutor($currentTutor->user_ID);
+				$tutors[] = $tutor;
+			}
 		}
 	}
 	return $tutors;
@@ -470,10 +468,22 @@ function getTutor($tutor_ID) {
 
 	$tutor 	= $wpdb->get_row("SELECT * FROM $userstable WHERE ID = $tutor_ID");
 	return array(
-	"Name"	=> $tutor->display_name,
-	"Email"	=> $tutor->user_email,
-	"ID"	=> $tutor_ID
+	"Name"		=> $tutor->display_name,
+	"Email"		=> $tutor->user_email,
+	"ID"		=> $tutor_ID,
+	"isActive"	=>	getTutorStatus($tutor_ID)
 	);
+}
+
+// Returns whether the tutor is 'active' or not (from ctc_tutor_status table)
+function getTutorStatus($tutor_ID) {
+	if (!isset($tutor_ID)) {
+		return NULL;
+	}
+	global $wpdb;
+	$result = $wpdb->get_var("SELECT isActive FROM ctc_tutor_status WHERE user_ID = $tutor_ID");
+	
+	return $result;
 }
 
 // Returns array of statistics about the tutoring system.
@@ -501,6 +511,16 @@ function getStatistics() {
 		"Total Tutors"				=>	$totalTutors,
 		"Total Courses"				=>	$totalCourses
 	);
+}
+
+// Returns True if at least one tutor is qualified to teach the specified course AND is also actively looking for new students
+function isCourseActive($course_ID) {
+	$qualifiedTutors = getQualifiedTutors($course_ID,True); // Check if active also.
+	if (count($qualifiedTutors) > 0) {
+		return True;
+	}
+	else
+		return False;
 }
 
 // Removes the specified qualification from the specified tutor. Returns true if successful.
@@ -541,8 +561,15 @@ function removeAllTutorData($tutor_ID) {
 				"tutor_ID"	=>	$tutor_ID
 			)
 		);
+	// Delete the 'active/non-active' flag
+	$result3 = $wpdb->delete(
+		"ctc_tutor_status",
+		array (
+				"user_ID"	=>	$tutor_ID
+			)
+		);
 
-	return ($result1 && $result2);
+	return ($result1 && $result2 && $result3);
 }
 
 // Removes a single application from the database.
@@ -575,15 +602,13 @@ function removeApplicationsBeforeDate($date) {
 }
 
 // Sets values for the specified course
-function setCourseProperties($course_ID,$code = NULL, $isEnabled = NULL) {
+function setCourseProperties($course_ID,$code = NULL) {
 	if (isset($course_ID)) {
 		global $wpdb;
 
 		$data = array();
 		if (isset($code))
 			$data["code"] = intval($code);
-		if (isset($isEnabled))
-			$data["isEnabled"] = $isEnabled;
 
 		$result = $wpdb->update(
 			"ctc_courses",
@@ -622,6 +647,32 @@ function setTutorQualification($tutor_ID,$course_ID) {
 		);
 
 	return $result;
+}
+
+// Set the status of the tutor (i.e. the "isActive flag in ctc_tutor_status"). Returns true if successful.
+function setTutorStatus($tutor_ID, $isActive) {
+	global $wpdb;
+
+	// Make sure $isActive is a boolean type
+	if (gettype($isActive) == "boolean") {
+		$result = $wpdb->update(
+			"ctc_tutor_status",
+			array(
+				"isActive"	=> $isActive
+				),
+			array(
+				"user_ID"	=> $tutor_ID
+				)
+			);
+
+		// Changes the result from 'number of rows updated' to ==> if something was updated, it's "true"
+		if ($result != false)
+			$result = true;
+
+		return $result;
+	}
+	else
+		return false; // The $isActive argument was not a boolean value.
 }
 
 // Returns an array of course codes, each of which has a list of applications.
@@ -667,6 +718,27 @@ function tutorHasQualifications($tutor_ID) {
 	$qualifications = $wpdb->get_results("SELECT * FROM ctc_tutor_qualifications WHERE user_ID = $tutor_ID");
 
 	return (sizeof($qualifications) > 0);
+}
+
+// Returns true if the tutor is actively seeking new tutees. Else returns false.
+// NOTE: if tutor doesn't have a record in the ctc_tutor_status table, one is added with default values.
+function tutorIsActive($tutor_ID) {
+	global $wpdb;
+
+	$result = $wpdb->get_row("SELECT isActive FROM ctc_tutor_status WHERE user_ID = $tutor_ID");
+
+	if (isset($result))
+		return $result->isActive == 1; // Return true if 'isActive' is true
+	else // The tutor's status was not in the db
+	{
+		$wpdb->insert(
+			"ctc_tutor_status",
+			array (
+				"user_ID"	=>	$tutor_ID,
+				)
+		);
+		return true;
+	}
 }
 
 // Unlists the specified tutor from the specified application. Returns true if unclaim was successful.

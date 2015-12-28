@@ -85,7 +85,7 @@ $courseData 	= getCourseList();
 		<div id="message" class="<?php echo $messageStatus; ?>">
 			<p><strong><?php echo $message; ?></strong></p>
 		</div>
-	<?php endif; ?>
+		<?php endif; ?>
 	<div class="container-fluid">
 		<div id="tutors_block">
 			<?php if (sizeof($tutorData) > 0): for ($i = 0; $i < count($tutorData); $i++): ?>
@@ -94,6 +94,19 @@ $courseData 	= getCourseList();
 			<div>
 				<h4>Email</h4>
 				<p id="email"><a href='mailto:<?php echo $t["Email"]; ?>'><?php echo $t["Email"]; ?></a></p>
+
+				<h4>Wants New Tutees</h4>
+				<?php 
+					// The message to display
+					$tutorStatusMessage = "<span style='border:3px dashed green;'>This tutor wants to tutor more students.</span>";
+
+					// If the tutor is NOT active, change the message.
+					if ($t["isActive"] == 0) {
+						$tutorStatusMessage = "<span style='border:3px dashed grey;'>This tutor is <b>not</b> looking for new students to teach.</span>";
+					}
+
+				 ?>
+				 <p><?php echo $tutorStatusMessage; ?></p>
 
 				<h4>Qualifications</h4>
 				<?php if (isset($t["Courses"])): ?>

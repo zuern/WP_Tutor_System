@@ -27,8 +27,17 @@ $wpdb->query("
   CREATE TABLE `ctc_courses` (
   `course_ID` int(10) NOT NULL AUTO_INCREMENT,
   `code` varchar(8) NOT NULL,
-  `isEnabled` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`course_ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8
+");
+
+$wpdb->query("
+DROP TABLE IF EXISTS `ctc_tutor_status`;
+CREATE TABLE `ctc_tutor_status` (
+`qid` int(11) NOT NULL AUTO_INCREMENT,
+`user_ID` int(11) NOT NULL COMMENT 'The ID number of the tutor',
+`isActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'If true, the tutor is actively looking for new students to teach',
+PRIMARY KEY (`qid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8
 ");
 

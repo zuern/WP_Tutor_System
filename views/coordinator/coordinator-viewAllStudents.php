@@ -148,13 +148,24 @@ $courseCodes = getAllApplications();
 							<input type="hidden" name="ApplicationID" value="<?php echo $application["ID"]; ?>">
 							<input type="hidden" name="CourseID" value="<?php echo $application["Course"]; ?>">
 							<input type="hidden" name="actionType" value="add">
-							<select name="tutorID" style="width:150px;">
-								<option value="-1">Assign a Tutor</option>
-								<?php foreach (getQualifiedTutors($application["Course_ID"]) as $t): ?>
-								<option value="<?php echo $t["ID"]; ?>"><?php echo $t["Name"]; ?></option>
-								<?php endforeach; ?>
-							</select>
-							<input type="Submit" value="Assign">
+							<?php 
+									$qualifiedTutors = getQualifiedTutors($application["Course_ID"],True);
+									if (sizeof($qualifiedTutors) > 0):
+							?>
+								<select name="tutorID" style="width:150px;">
+									<option value="-1">Assign a Tutor</option>
+									<?php foreach (getQualifiedTutors($application["Course_ID"]) as $t): ?>
+									<option value="<?php echo $t["ID"]; ?>"><?php echo $t["Name"]; ?></option>
+									<?php endforeach; ?>
+								</select>
+								<input type="Submit" value="Assign">
+							<?php else: ?>
+								<?php 
+									// Calculate how many tutors are qualified for below
+									$numQualifiedTutors = sizeof(getQualifiedTutors($application["Course_ID"]));
+								 ?>
+								<p style="color:red; font-weight:bold;">No tutors available!<br>(<?php echo $numQualifiedTutors; ?> qualified)</p>
+							<?php endif; ?>
 						</form>
 						<?php endif; ?>
 					</td>
