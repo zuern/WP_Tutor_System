@@ -56,7 +56,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			<h2>Advanced</h2>
 			<h3>Delete Everything:</h3>
 			<p>Please don't ever click this unless you are 1000% sure you want to.</p>
-			<form action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="post" style="border:1px grey solid; padding:10px;">
+			<style type="text/css">
+			form {
+				border:1px grey solid;
+				padding:10px;
+			}
+			</style>
+			<form action="<?php echo $_SERVER["REQUEST_URI"]; ?>" method="post">
 				<label>Drop all Code the Change Tables and Delete All Tutors and Coordinators</label><br><br>
 				<input type="hidden" name="actionType" value="deleteEverything">
 				<input type="radio" name="recreateTables" value="1" checked>Re-create tables after deletion.<br>

@@ -9,11 +9,13 @@ defined("ABSPATH") or die("No Script Kiddies Please!");	// Prevents direct acces
 
 	<h3>Statistics:</h3>
 
+	<style type="text/css">
+		table.ctc th, table.ctc td {
+			padding:5px 15px;
+		}
+	</style>
+
 	<table style="text-align:right;" class="ctc">
-		<tr>
-			<th>Metric</th>
-			<th>Value</th>
-		</tr>
 		<?php foreach (getStatistics() as $key => $value): ?>
 		<tr>
 			<td style="font-weight:bold; font-size:15px;"><?php echo $key; ?></td>

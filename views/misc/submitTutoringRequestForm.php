@@ -155,7 +155,7 @@
 	</div>
 <?php endif; ?>
 
-<label for="fullName">Full Name <span class="extrainfo">(Last, First)</span></label>
+<label for="fullName">Full Name <span class="extrainfo">(First, Last)</span></label>
 <input type="text" name="fullName" value="<?php echo $fullName; ?>" required>
 
 <label for="email">Email <span class="extrainfo">(NetID@queensu.ca)</span></label>
