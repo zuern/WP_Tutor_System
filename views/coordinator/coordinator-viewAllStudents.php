@@ -145,7 +145,7 @@ $courseCodes = getAllApplications();
 				?>
 			<select name="tutorID" style="width:150px;">
 				<option value="-1">Assign a Tutor</option>
-				<?php foreach (getQualifiedTutors($application["Course_ID"]) as $t): ?>
+				<?php foreach ($qualifiedTutors as $t): ?>
 				<option value="<?php echo $t["ID"]; ?>"><?php echo $t["Name"]; ?></option>
 			<?php endforeach; ?>
 		</select>
