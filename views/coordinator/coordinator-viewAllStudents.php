@@ -9,11 +9,11 @@ $messageStatus = NULL;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-	$AID 			= intval($_POST["ApplicationID"]);
-	$application 	= getApplication($AID);
-	$TID 			= intval($_POST["tutorID"]);
-	$CID 			= $application["Course_ID"];
-	$actionType 	= $_POST["actionType"];
+	$AID         = intval($_POST["ApplicationID"]);
+	$application = getApplication($AID);
+	$TID         = intval($_POST["tutorID"]);
+	$CID         = $application["Course_ID"];
+	$actionType  = $_POST["actionType"];
 
 	// Delete student application record
 	if (isset($AID) && isset($actionType) && $AID > 0 && $actionType == "DeleteApplication") {

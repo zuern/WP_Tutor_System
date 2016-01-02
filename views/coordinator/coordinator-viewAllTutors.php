@@ -156,6 +156,7 @@ $hasApps   = isset($tutorApps);
 			<th>Course</th>
 			<th>Name</th>
 			<th>Email</th>
+			<th>Frequency</th>
 			<th>App Date</th>
 			<th>Claim Date</th>
 			<th>ID</th>
@@ -170,6 +171,9 @@ $hasApps   = isset($tutorApps);
 			</td>
 			<td>
 				<a href='mailto:<?php echo $a["Email"]; ?>'><?php echo esc_html($a["Email"]); ?></a>
+			</td>
+			<td>
+				<?php echo $a["Frequency"] ?>
 			</td>
 			<td>
 				<?php echo $a["SubmitDate"]; ?>
