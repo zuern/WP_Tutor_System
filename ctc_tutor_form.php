@@ -2,7 +2,7 @@
 /*
 Plugin Name: Englinks Tutor Matcher
 Description: This plugin provides an interface for automatically matching students with tutors.
-Version: 1.1.5
+Version: 1.2
 Author: Code the Change, Queen's Chapter
 Author URI: http://www.queenscodethechange.com/
 License: GPL2
@@ -60,7 +60,6 @@ class ctc_tutor_form {
 	public function deactivate()
 	{
 		// Deactivate the plugin
-
 	} // END public function deactivate()
 
 
