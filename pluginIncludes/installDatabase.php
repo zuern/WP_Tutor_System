@@ -2,7 +2,7 @@
 global $wpdb;
 
 $wpdb->query("
-  CREATE TABLE `ctc_tutor_qualifications` (
+  CREATE TABLE IF NOT EXISTS `ctc_tutor_qualifications` (
   `qid` int(11) NOT NULL AUTO_INCREMENT,
   `user_ID` int(11) NOT NULL COMMENT 'The ID number of the tutor',
   `course_ID` int(11) NOT NULL COMMENT 'course id',
@@ -10,7 +10,7 @@ $wpdb->query("
   KEY `tid` (`user_ID`)
 ) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
 $wpdb->query("
-  CREATE TABLE `ctc_applications` (
+  CREATE TABLE IF NOT EXISTS `ctc_applications` (
   `application_ID` int(10) NOT NULL AUTO_INCREMENT,
   `email` varchar(64) NOT NULL,
   `course_ID` int(10) NOT NULL,
@@ -24,7 +24,7 @@ $wpdb->query("
 ) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8
 ");
 $wpdb->query("
-  CREATE TABLE `ctc_courses` (
+  CREATE TABLE IF NOT EXISTS `ctc_courses` (
   `course_ID` int(10) NOT NULL AUTO_INCREMENT,
   `code` varchar(8) NOT NULL,
   PRIMARY KEY (`course_ID`)
